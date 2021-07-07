@@ -19,14 +19,14 @@ def main():
         
         # this is only for the debug messages 
         if(recvstring == "PIPE"):
-            __init__.messageHandler.sendDebugMessage(str(data['status'])+" "+ data['pipelinePos']+" "+ data['time'])
+            __init__.messageHandler.sendDebugMessage(str(data['status'])+" "+ data['pipelinePos']+" "+ data['time'], api = __init__.const.smsconfig['textbelt-key'])
             
         
         if(recvstring == "REC"):
-            __init__.messageHandler.sendMessage(message = "Eeeep there is a "+ data['status'] +" user named"+" "+str(data['user'])+ "and here is there face"+ " "+data['imgurl'], phoneNum=data['phone'])
+            __init__.messageHandler.sendMessage(message = "Eeeep there is a "+ data['status'] +" user named"+" "+str(data['user'])+ "and here is there face"+ " "+data['imgurl'], phoneNum=data['phone'], api = __init__.const.smsconfig['textbelt-key'])
             
         if(recvstring == "CONTROL" and data['controller'] == "SHUTDOWN"):
-                __init__.messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'])
+                __init__.messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'],api = __init__.const.smsconfig['textbelt-key'])
                 exit(1001)
             
 
