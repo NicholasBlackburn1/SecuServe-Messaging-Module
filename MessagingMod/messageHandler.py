@@ -69,14 +69,17 @@ def _balence(endpoint,apikey,phoneNum,message):
     print("Qutoa left:"+" "+ str(resp.json()['quotaRemaining']))
 
 # Sends life threating Info
-def sendWarnMessage(message,phoneNum):
-    _message(default_endpoint,'apikey',phoneNum,"[SECU-SERVE]"+ str(" ")+"WARNING! WARNING! WARNING!"+str("  ")+str(message))
+def sendWarnMessage(message,phoneNum,api):
+    _message(default_endpoint,api,phoneNum,"[SECU-SERVE]"+ str(" ")+"WARNING! WARNING! WARNING!"+str("  ")+str(message))
 
+# Sends Debug  Info
+def sendDebugMessage(message,phoneNum,api):
+    _message(default_endpoint,api,phoneNum,"[SECU-SERVE]"+ str(" ")+"debug"+str("  ")+str(message))
 
 
 # Sends Warning threating Info
-def sendMessage(message,phoneNum):
-    _message(default_endpoint,'apikey',phoneNum,"[SECU-SERVE]"+str("  ")+str(message))
+def sendMessage(message,phoneNum,api):
+    _message(default_endpoint,api,phoneNum,"[SECU-SERVE]"+str("  ")+str(message))
 
 
 def sendCapturedImageMessage(message,phoneNum,url,api):

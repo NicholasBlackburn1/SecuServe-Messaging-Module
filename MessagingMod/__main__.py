@@ -2,7 +2,6 @@
 allows Secuserve Securtiy to send messges via zmq to be txted to the users
 """
 
-from zmq.sugar.frame import Message
 import __init__
 
 def main():
@@ -10,11 +9,26 @@ def main():
     context = __init__.zmq.Context()
     message_socket =  context.socket(__init__.zmq.SUB)
     message_socket.setsockopt(__init__.zmq.SUBSCRIBE, b'')
-    message_socket.connect("tcp://"+"127.0.0.1:5001")
+    message_socket.connect("tcp://"+"127.0.0.1:5002")
     
-    recvmsg = message_socket.recv_json()
-    
-
+    while message_socket.recv_json() !=None:
+        recvstring = message_socket.recv_string()
+        recvmsg = message_socket.recv_json()
+        data = __init__.json.load(recvmsg)
+        
+        
+        # this is only for the debug messages 
+        if(recvstring == "PIPE"):
+            __init__.messageHandler.sendDebugMessage(str(data['status'])+" "+ data['pipelinePos']+" "+ data['time'])
+            
+        
+        if(recvstring == "REC"):
+            __init__.messageHandler.sendMessage(message = "Eeeep there is a "+ data['status'] +" user named"+" "+str(data['user'])+ "and here is there face"+ " "+data['imgurl'], phoneNum=data['phone'])
+            
+        if(recvstring == "CONTROL" and data['controller'] == "SHUTDOWN"):
+                __init__.messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'])
+                exit(1001)
+            
 
 if __name__ == "__main__":
     main()
