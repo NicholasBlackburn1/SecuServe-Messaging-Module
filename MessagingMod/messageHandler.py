@@ -37,7 +37,7 @@ def _message(endpoint,apikey,phoneNum,message):
     
     # if the custom endpoint fails, Use Default one
     if(resp.json()['success'] == False):
-       v__init__.logging.warn("Faild to send message via the first endpoint now sending it with the Default one")
+        __init__.logging.warn("Faild to send message via the first endpoint now sending it with the Default one")
         print("textbelt request:"+"   "+ phone+ "   "+ msg+ "  "+ apikey)
 
         phone = str(phoneNum)
