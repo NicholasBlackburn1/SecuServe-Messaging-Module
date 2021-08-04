@@ -27,7 +27,7 @@ def main():
             
         if(recvstring == "CONTROL" and data['controller'] == "SHUTDOWN"):
                 __init__.messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'],api = __init__.const.smsconfig['textbelt-key'])
-                exit(1001)
+                exit(0)
             
 
 if __name__ == "__main__":
