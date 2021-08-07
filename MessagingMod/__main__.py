@@ -2,33 +2,45 @@
 allows Secuserve Securtiy to send messges via zmq to be txted to the users
 """
 
-import __init__
+import imports
 
 def main():
     # this is for reciving messages from the modles and sending the messages to the users
-    context = __init__.zmq.Context()
-    message_socket =  context.socket(__init__.zmq.SUB)
-    message_socket.setsockopt(__init__.zmq.SUBSCRIBE, b'')
+    context = imports.zmq.Context()
+    message_socket =  context.socket(imports.zmq.SUB)
+    message_socket.setsockopt(imports.zmq.SUBSCRIBE, b'')
     message_socket.connect("tcp://"+"127.0.0.1:5002")
     
-    while message_socket.recv_json() !=None:
-        recvstring = message_socket.recv_string()
-        recvmsg = message_socket.recv_json()
-        data = __init__.json.load(recvmsg)
+    
+
+    poller = imports.zmq.Poller()
+    poller.register(message_socket, imports.zmq.POLLIN)
+    Debug = True
+    while True:
+        evts = dict(poller.poll(timeout=100))
+        if message_socket in evts:
         
-        
-        # this is only for the debug messages 
-        if(recvstring == "PIPE"):
-            __init__.messageHandler.sendDebugMessage(str(data['status'])+" "+ data['pipelinePos']+" "+ data['time'], api = __init__.const.smsconfig['textbelt-key'])
             
-        
-        if(recvstring == "REC"):
-            __init__.messageHandler.sendMessage(message = "Eeeep there is a "+ data['status'] +" user named"+" "+str(data['user'])+ "and here is there face"+ " "+data['imgurl'], phoneNum=data['phone'], api = __init__.const.smsconfig['textbelt-key'])
+            topic = message_socket.recv_string()
+            status = message_socket.recv_json()
+            print(topic)
             
-        if(recvstring == "CONTROL" and data['controller'] == "SHUTDOWN"):
-                __init__.messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'],api = __init__.const.smsconfig['textbelt-key'])
-                exit(0)
-            
+            if(topic == "PIPELINE" and Debug):
+                imports.messageHandler.sendDebugMessage(phoneNum=4123891615,message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = imports.const.smsconfig['textbelt-key'])
+                
+                
+            if(topic == "USERS"):
+                 imports.messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['user'])+ "and here is there face"+ " "+status['image'], phoneNum=4123891615, api = imports.const.smsconfig['textbelt-key'])
+                
+            if(topic == "ERROR"):
+                print(Fore.RED+f"Topic: {topic} => {status}")
+                print(Fore.RESET)
+            """
+            if(recvstring == "CONTROL" and data['controller'] == "SHUTDOWN"):
+                    imports.messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'],api = imports.const.smsconfig['textbelt-key'])
+                    exit(0)
+            """        # this is only for the debug messages 
+         
 
 if __name__ == "__main__":
     main()
