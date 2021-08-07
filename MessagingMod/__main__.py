@@ -3,14 +3,15 @@ allows Secuserve Securtiy to send messges via zmq to be txted to the users
 """
 
 import imports
-
+import messageHandler
+import const
 def main():
+   
     # this is for reciving messages from the modles and sending the messages to the users
     context = imports.zmq.Context()
     message_socket =  context.socket(imports.zmq.SUB)
     message_socket.setsockopt(imports.zmq.SUBSCRIBE, b'')
-    message_socket.connect("tcp://"+"127.0.0.1:5002")
-    
+    message_socket.connect("tcp://"+"127.0.0.1:5001")
     
 
     poller = imports.zmq.Poller()
@@ -26,11 +27,11 @@ def main():
             print(topic)
             
             if(topic == "PIPELINE" and Debug):
-                imports.messageHandler.sendDebugMessage(phoneNum=4123891615,message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = imports.const.smsconfig['textbelt-key'])
+                messageHandler.sendDebugMessage(phoneNum=4123891615,message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = 'c19ccdde0e644c3762ed0a3033d5f37baca3af85YYe5RuL35j8fGifnCPvRroQ5M')
                 
                 
             if(topic == "USERS"):
-                 imports.messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['user'])+ "and here is there face"+ " "+status['image'], phoneNum=4123891615, api = imports.const.smsconfig['textbelt-key'])
+                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['user'])+ "and here is there face"+ " "+status['image'], phoneNum=4123891615, api = 'c19ccdde0e644c3762ed0a3033d5f37baca3af85YYe5RuL35j8fGifnCPvRroQ5M')
                 
             if(topic == "ERROR"):
                 print(Fore.RED+f"Topic: {topic} => {status}")
