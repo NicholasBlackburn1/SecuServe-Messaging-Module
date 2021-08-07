@@ -31,7 +31,7 @@ def main():
                 
                 
             if(topic == "USERS"):
-                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['user'])+ "and here is there face"+ " "+status['image'], phoneNum=4123891615, api = 'c19ccdde0e644c3762ed0a3033d5f37baca3af85YYe5RuL35j8fGifnCPvRroQ5M')
+                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['usr'])+ "and here is there face"+ " "+status['url'], phoneNum=4123891615, api = 'c19ccdde0e644c3762ed0a3033d5f37baca3af85YYe5RuL35j8fGifnCPvRroQ5M')
                 
             if(topic == "ERROR"):
                 print(Fore.RED+f"Topic: {topic} => {status}")
