@@ -5,8 +5,20 @@ allows Secuserve Securtiy to send messges via zmq to be txted to the users
 import imports
 import messageHandler
 import const
+import configparser 
+import consoleLog
 def main():
-   
+    
+    
+    PATH = str(imports.pathlib.Path().absolute())+"/data/"+"Config.ini"
+    config_object = imports.ConfigParser()
+    config_object.read(PATH)
+    sms = config_object['SMS']
+    consoleLog.Debug(PATH)
+  
+  
+  
+    
     # this is for reciving messages from the modles and sending the messages to the users
     context = imports.zmq.Context()
     message_socket =  context.socket(imports.zmq.SUB)
@@ -24,14 +36,14 @@ def main():
             
             topic = message_socket.recv_string()
             status = message_socket.recv_json()
-            print(topic)
+          
             
             if(topic == "PIPELINE" and Debug):
-                messageHandler.sendDebugMessage(phoneNum=4123891615,message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = '')
+                messageHandler.sendDebugMessage(phoneNum=4123891615,message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = sms['textbelt-key'])
                 
                 
             if(topic == "USERS"):
-                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['usr'])+ "and here is there face"+ " "+status['image'], phoneNum=4123891615, api = '')
+                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['usr'])+ "and here is there face"+ " "+status['image'], phoneNum=4123891615, api = sms['textbelt-key'])
                 
             if(topic == "ERROR"):
                 print(Fore.RED+f"Topic: {topic} => {status}")
