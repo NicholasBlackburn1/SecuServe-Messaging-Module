@@ -28,7 +28,12 @@ def main():
 
     poller = imports.zmq.Poller()
     poller.register(message_socket, imports.zmq.POLLIN)
-    Debug = True
+    Debug = sms['Debug']
+    
+    print(Debug)
+    if(Debug == sms['Debug']):
+        Debug = False
+        
     while True:
         evts = dict(poller.poll(timeout=100))
         if message_socket in evts:
