@@ -18,4 +18,3 @@ default_endpoint = 'https://textbelt.com/text'
 
 
 
-print("in const")

@@ -27,11 +27,11 @@ def main():
             print(topic)
             
             if(topic == "PIPELINE" and Debug):
-                messageHandler.sendDebugMessage(phoneNum=4123891615,message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = 'c19ccdde0e644c3762ed0a3033d5f37baca3af85YYe5RuL35j8fGifnCPvRroQ5M')
+                messageHandler.sendDebugMessage(phoneNum=4123891615,message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = '')
                 
                 
             if(topic == "USERS"):
-                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['usr'])+ "and here is there face"+ " "+status['url'], phoneNum=4123891615, api = 'c19ccdde0e644c3762ed0a3033d5f37baca3af85YYe5RuL35j8fGifnCPvRroQ5M')
+                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['usr'])+ "and here is there face"+ " "+status['image'], phoneNum=4123891615, api = '')
                 
             if(topic == "ERROR"):
                 print(Fore.RED+f"Topic: {topic} => {status}")
