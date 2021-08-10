@@ -29,7 +29,7 @@ def main():
     poller = imports.zmq.Poller()
     poller.register(message_socket, imports.zmq.POLLIN)
     Debug = sms['Debug']
-    
+    print(consoleLog.Warning("Starting the Messaging Module!"))
     print(Debug)
     if(Debug == sms['Debug']):
         Debug = False
@@ -44,15 +44,15 @@ def main():
           
             
             if(topic == "PIPELINE" and Debug):
-                messageHandler.sendDebugMessage(phoneNum=4123891615,message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = sms['textbelt-key'])
+                messageHandler.sendDebugMessage(phoneNum=int(str(status['phonenum'])),message = str(status['status'])+" "+ status['pipelinePos']+" "+ status['time'], api = sms['textbelt-key'])
                 
                 
             if(topic == "USERS"):
-                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['usr'])+ "and here is there face"+ " "+status['image'], phoneNum=4123891615, api = sms['textbelt-key'])
+                 messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['usr'])+" "+"and here is there face"+ " "+status['image'], phoneNum=int(str(status['phonenum'])), api = sms['textbelt-key'])
+                 imports.time.sleep(.5)
                 
-            if(topic == "ERROR"):
-                print(Fore.RED+f"Topic: {topic} => {status}")
-                print(Fore.RESET)
+            if(topic == "ERROR" and status['ERROR']):
+                imports.messageHandler.sendWarnMessage(message="SecuServe Secutity System"+status['pipelinePos'] + " "+ "at"+" "+status['time'],phoneNum=int(str(status['phonenum'])),api = imports.const.smsconfig['textbelt-key'])
             """
             if(recvstring == "CONTROL" and data['controller'] == "SHUTDOWN"):
                     imports.messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'],api = imports.const.smsconfig['textbelt-key'])
