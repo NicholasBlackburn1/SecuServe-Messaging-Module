@@ -2,7 +2,9 @@
 this class is for handling full Messaging capabilitys for Notifing the user during import situations in program
 TODO: Get Custom Textbelt Gateway to work so i dont have to charge users to use this program
 """
-import imports
+
+import requests
+from utils import consoleLog
 
 default_endpoint ='https://textbelt.com/text'
 
@@ -17,7 +19,7 @@ def checkEndpoint(phoneNum,apikey):
     })
     
     print(resp.json()['success'])
-    logging.info("Responce from Textbelt"+ "  "+ "Enpoint Checking  "+" "+"Was Sent"+"  "+ str(resp.json()['success']))
+    consoleLog.info("Responce from Textbelt"+ "  "+ "Enpoint Checking  "+" "+"Was Sent"+"  "+ str(resp.json()['success']))
 
 # this is for handling sending all the messages UwU
 def _message(endpoint,apikey,phoneNum,message):
@@ -25,19 +27,20 @@ def _message(endpoint,apikey,phoneNum,message):
     phone = str(phoneNum)
     msg = str(message)
     apikey = str(apikey)
-    print("textbelt request:"+"   "+ phone+ "   "+ msg+ "  "+ apikey)
+
+    consoleLog.PipeLine_Ok("textbelt request:"+"   "+ phone+ "   "+ msg+ "  "+ apikey)
 
     resp = requests.post(endpoint, {
     'phone': phone,
     'message': msg,
     'key': apikey,
     })
-    logging.warn("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
-    print("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
+    consoleLog.Warning("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
+    consoleLog.PipeLine_Ok("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
     
     # if the custom endpoint fails, Use Default one
     if(resp.json()['success'] == False):
-        logging.warn("Faild to send message via the first endpoint now sending it with the Default one")
+        consoleLog.Warning("Faild to send message via the first endpoint now sending it with the Default one")
         print("textbelt request:"+"   "+ phone+ "   "+ msg+ "  "+ apikey)
 
         phone = str(phoneNum)
@@ -49,9 +52,10 @@ def _message(endpoint,apikey,phoneNum,message):
         'key': apikey,
         })
         print("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success'])+ "   "+ "error:"+"  "+str(resp.json()['error']))
-        logging.info("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success'])+ "   "+ "error:"+"  "+str(resp.json()['error']))
-   
+        consoleLog.info("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success'])+ "   "+ "error:"+"  "+str(resp.json()['error']))
 
+
+# this checks the ballance of the api key 
 def _balence(endpoint,apikey,phoneNum,message):
 
     phone = str(phoneNum)
@@ -64,7 +68,7 @@ def _balence(endpoint,apikey,phoneNum,message):
     'message': msg,
     'key': apikey,
     })
-    logging.warn("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
+    consoleLog.Warning("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
     print("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
     print("Qutoa left:"+" "+ str(resp.json()['quotaRemaining']))
 
@@ -81,9 +85,10 @@ def sendDebugMessage(message,phoneNum,api):
 def sendMessage(message,phoneNum,api):
     _message(default_endpoint,api,phoneNum,"[SECU-SERVE]"+str("  ")+str(message))
 
-
+# Sends a caputued image to the user
 def sendCapturedImageMessage(message,phoneNum,url,api):
     _message(default_endpoint,apikey=api,phoneNum=phoneNum,message="[SECU-SERVE-CAPUTURED]"+str("  ")+str(message)+" "+str(url))
 
+# checks the balance to the calls bakie
 def checkbalRemaining(phoneNum,api):
     _balence(default_endpoint,apikey=api,phoneNum=phoneNum,message="checking bal")
