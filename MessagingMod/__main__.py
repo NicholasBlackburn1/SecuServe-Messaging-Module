@@ -1,13 +1,16 @@
 """
 allows Secuserve Securtiy to send messges via zmq to be txted to the users
+TODO: allow messags from the lets say manager to create status messages sent to user
 """
 
 
-import messageHandler
+from messager import messageHandler
 import const
-import configparser 
-import consoleLog
+from utils import consoleLog
 import pathlib 
+from configparser import ConfigParser
+import zmq
+from datetime import time
 
 def main():
     
