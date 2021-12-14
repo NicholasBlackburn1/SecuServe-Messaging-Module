@@ -1,42 +1,57 @@
 """
 Simple Debuging Colorizer for the console uwu
 """
-import imports
+
+import colorama
+from datetime import datetime
+
+def info(text):
+    dmsgLayout("INFO", colorama.Fore.WHITE, text)
+    return
+
 
 def Debug(text):
-    print(imports.Fore.LIGHTWHITE_EX+str(text))
-    print(imports.Style.RESET_ALL)
-  
-    return 
+    dmsgLayout("DEBUG", colorama.Fore.LIGHTBLUE_EX, text)
+    return
 
 
 def Warning(text):
-    print(imports.Fore.YELLOW+str(text))
-    print(imports.Style.RESET_ALL)
-    
+    dmsgLayout("WARNING", colorama.Fore.YELLOW, text)
     return
 
 
 def Error(text):
-    print(imports.Fore.RED+str(text))
-    print(imports.Style.RESET_ALL)
-  
+    dmsgLayout("ERROR", colorama.Fore.RED, text)
     return
+
 
 def PipeLine_Ok(text):
-    print(imports.Fore.GREEN+str(text))
-    print(imports.Style.RESET_ALL)
-   
+    dmsgLayout("OK", colorama.Fore.LIGHTGREEN_EX, text)
     return
+
 
 def PipeLine_init(text):
-    print(imports.Fore.LIGHTBLUE_EX + str(text))
-    print(imports.Style.RESET_ALL)
-  
+    dmsgLayout("INIT", colorama.Fore.LIGHTMAGENTA_EX, text)
     return
 
+
 def PipeLine_Data(text):
-    print(imports.Fore.LIGHTMAGENTA_EX + str(text))
-    print(imports.Style.RESET_ALL)
- 
+    dmsgLayout("DATA", colorama.Fore.LIGHTCYAN_EX, text)
+
     return
+
+
+def dmsgLayout(type, color, message):
+    print(
+        colorama.Fore.GREEN
+        + "["
+        + str(datetime.now())
+        + "]"
+        + " "
+        + color
+        + str(type)
+        + ":"
+        + " "
+        + colorama.Fore.WHITE
+        + str(message)+"\n"
+    )

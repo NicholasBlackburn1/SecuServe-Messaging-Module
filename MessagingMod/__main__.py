@@ -2,16 +2,18 @@
 allows Secuserve Securtiy to send messges via zmq to be txted to the users
 """
 
-import imports
+
 import messageHandler
 import const
 import configparser 
 import consoleLog
+import pathlib 
+
 def main():
     
     
-    PATH = str(imports.pathlib.Path().absolute())+"/data/"+"Config.ini"
-    config_object = imports.ConfigParser()
+    PATH = str(pathlib.Path().absolute())+"/data/"+"Config.ini"
+    config_object = ConfigParser()
     config_object.read(PATH)
     sms = config_object['SMS']
     consoleLog.Debug(PATH)
@@ -20,14 +22,14 @@ def main():
   
     
     # this is for reciving messages from the modles and sending the messages to the users
-    context = imports.zmq.Context()
-    message_socket =  context.socket(imports.zmq.SUB)
-    message_socket.setsockopt(imports.zmq.SUBSCRIBE, b'')
+    context = zmq.Context()
+    message_socket =  context.socket(zmq.SUB)
+    message_socket.setsockopt(zmq.SUBSCRIBE, b'')
     message_socket.connect("tcp://"+"127.0.0.1:5001")
     
 
-    poller = imports.zmq.Poller()
-    poller.register(message_socket, imports.zmq.POLLIN)
+    poller = zmq.Poller()
+    poller.register(message_socket, zmq.POLLIN)
     Debug = sms['Debug']
     print(consoleLog.Warning("Starting the Messaging Module!"))
     print(Debug)
@@ -49,13 +51,13 @@ def main():
                 
             if(topic == "USERS"):
                  messageHandler.sendMessage(message = "Eeeep there is a "+ status['status'] +" user named"+" "+str(status['usr'])+" "+"and here is there face"+ " "+status['image'], phoneNum=int(str(status['phonenum'])), api = sms['textbelt-key'])
-                 imports.time.sleep(.5)
+                 time.sleep(.5)
                 
             if(topic == "ERROR" and status['ERROR']):
-                imports.messageHandler.sendWarnMessage(message="SecuServe Secutity System"+status['pipelinePos'] + " "+ "at"+" "+status['time'],phoneNum=int(str(status['phonenum'])),api = imports.const.smsconfig['textbelt-key'])
+                messageHandler.sendWarnMessage(message="SecuServe Secutity System"+status['pipelinePos'] + " "+ "at"+" "+status['time'],phoneNum=int(str(status['phonenum'])),api = const.smsconfig['textbelt-key'])
             """
             if(recvstring == "CONTROL" and data['controller'] == "SHUTDOWN"):
-                    imports.messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'],api = imports.const.smsconfig['textbelt-key'])
+                    messageHandler.sendWarnMessage(message="Shutting down SecuServe Secutity System",phoneNum=data['phone'],api = const.smsconfig['textbelt-key'])
                     exit(0)
             """        # this is only for the debug messages 
          

@@ -10,14 +10,14 @@ default_endpoint ='https://textbelt.com/text'
 def checkEndpoint(phoneNum,apikey):
     phone = str("'")+str(phoneNum)+str("'")
     key = str(apikey)
-    resp =  imports.requests.post('https://textbelt.com/text', {
+    resp =  requests.post('https://textbelt.com/text', {
     'phone': phone,
     'message': 'Hello world This is A Test Message from SecuServe UwU',
     'key': key,
     })
     
     print(resp.json()['success'])
-    imports.logging.info("Responce from Textbelt"+ "  "+ "Enpoint Checking  "+" "+"Was Sent"+"  "+ str(resp.json()['success']))
+    logging.info("Responce from Textbelt"+ "  "+ "Enpoint Checking  "+" "+"Was Sent"+"  "+ str(resp.json()['success']))
 
 # this is for handling sending all the messages UwU
 def _message(endpoint,apikey,phoneNum,message):
@@ -27,29 +27,29 @@ def _message(endpoint,apikey,phoneNum,message):
     apikey = str(apikey)
     print("textbelt request:"+"   "+ phone+ "   "+ msg+ "  "+ apikey)
 
-    resp = imports.requests.post(endpoint, {
+    resp = requests.post(endpoint, {
     'phone': phone,
     'message': msg,
     'key': apikey,
     })
-    imports.logging.warn("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
+    logging.warn("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
     print("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
     
     # if the custom endpoint fails, Use Default one
     if(resp.json()['success'] == False):
-        imports.logging.warn("Faild to send message via the first endpoint now sending it with the Default one")
+        logging.warn("Faild to send message via the first endpoint now sending it with the Default one")
         print("textbelt request:"+"   "+ phone+ "   "+ msg+ "  "+ apikey)
 
         phone = str(phoneNum)
         msg = str(message)
         apikey =str(apikey)
-        resp = imports.requests.post('https://textbelt.com/text', {
+        resp = requests.post('https://textbelt.com/text', {
         'phone': phone,
         'message': msg,
         'key': apikey,
         })
         print("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success'])+ "   "+ "error:"+"  "+str(resp.json()['error']))
-        imports.logging.info("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success'])+ "   "+ "error:"+"  "+str(resp.json()['error']))
+        logging.info("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success'])+ "   "+ "error:"+"  "+str(resp.json()['error']))
    
 
 def _balence(endpoint,apikey,phoneNum,message):
@@ -59,12 +59,12 @@ def _balence(endpoint,apikey,phoneNum,message):
     apikey = str(apikey)
     print("textbelt request:"+"   "+ phone+ "   "+ msg+ "  "+ apikey)
 
-    resp = imports.requests.post(endpoint, {
+    resp = requests.post(endpoint, {
     'phone': phone,
     'message': msg,
     'key': apikey,
     })
-    imports.logging.warn("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
+    logging.warn("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
     print("Responce from Textbelt"+ "  "+ str(message)+" "+"Was Sent"+"  "+ str(resp.json()['success']))
     print("Qutoa left:"+" "+ str(resp.json()['quotaRemaining']))
 
