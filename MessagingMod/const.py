@@ -2,7 +2,6 @@
 dirty const setup 
 """
 
-import imports
 from pathlib import Path 
 
 # this is all the global paths needed throuht the program

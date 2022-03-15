@@ -26,16 +26,18 @@ def main():
     
     # this is for reciving messages from the modles and sending the messages to the users
     context = zmq.Context()
-    message_socket =  context.socket(zmq.SUB)
-    message_socket.setsockopt(zmq.SUBSCRIBE, b'')
+    message_socket =  context.socket(zmq.PULL)
+ 
     message_socket.connect("tcp://"+"127.0.0.1:5001")
     
 
     poller = zmq.Poller()
     poller.register(message_socket, zmq.POLLIN)
+    
     Debug = sms['Debug']
     print(consoleLog.Warning("Starting the Messaging Module!"))
     print(Debug)
+
     if(Debug == sms['Debug']):
         Debug = False
         
